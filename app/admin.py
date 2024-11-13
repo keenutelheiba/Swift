@@ -4,7 +4,7 @@ from app.models import CustomUser, Station, ClassType, Train, Booking, BookingDe
 
 # Register your models here.
 
-admin.site.site_header = 'LTTP Admin Panel'
+admin.site.site_header = 'Administrator'
 
 
 @admin.register(CustomUser)
