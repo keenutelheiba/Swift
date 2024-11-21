@@ -3,7 +3,7 @@ Real-Time Ticketing Application
 
 # Ticket_Booking_System
 
-<p>Description: Online Ticket Booking System is a web-based application, that can access from anywhere over the internet browser. Users can buy train tickets easily online by following some steps. And, admin can manage the system from the admin panel easily.</p>
+<p>Description: Online Ticket Booking System is a web-based application, that can access from anywhere over the internet browser. Users can buy  tickets easily online by following some steps. And, admin can manage the system from the admin panel easily.</p>
 
 <h4>System Features:<br>
   a. User registration <br>
