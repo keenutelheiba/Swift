@@ -27,15 +27,21 @@
                             <div class="form-row m-2 mt-4">
                               <div class="col">
                                 <label for="rfrom" class="text-white">Route From:</label>
-                                <select name="rfrom" id="rfrom" class="form-control" required>
-                                    <option value="{{form.source}}"></option>
-                                </select>
+                                <div class="station-search-container">
+                                  <input type="text" name="rfrom_display" id="rfrom" class="form-control station-search" 
+                                         placeholder="Search station..." autocomplete="off" required>
+                                  <input type="hidden" name="rfrom" id="rfrom_id">
+                                  <div id="fromResults" class="search-results"></div>
+                                </div>
                               </div>
                               <div class="col">
                                 <label for="to" class="text-white">Route To:</label>
-                                <select name="to" id="to" class="form-control" required>
-                                    <option value="{{form.destination}}"></option>
-                                </select>
+                                <div class="station-search-container">
+                                  <input type="text" name="to_display" id="to" class="form-control station-search"
+                                         placeholder="Search station..." autocomplete="off" required>
+                                  <input type="hidden" name="to" id="to_id">
+                                  <div id="toResults" class="search-results"></div>
+                                </div>
                               </div>
                             </div>
 

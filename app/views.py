@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from app.models import CustomUser, Feedback, ContactForm, ContactNumber, Train, Station, ClassType, Booking, BookingDetail, BillingInfo, Payment, Ticket
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from app.forms import TrainForm
 from datetime import timezone, datetime, timedelta
+from django.db.models import Q
 
 
 # Create your views here.
@@ -441,3 +442,22 @@ class Profile(View):
             return render(request, 'profile.html')
         else:
             return redirect('login')
+
+def search_stations(request):
+    query = request.GET.get('q', '').strip()
+    if not query:
+        return JsonResponse([], safe=False)
+        
+    stations = Station.objects.filter(
+        Q(name__icontains=query) | Q(place__icontains=query)
+    )[:10]
+    
+    results = [
+        {
+            'id': station.id,
+            'name': station.name,
+            'place': station.place
+        }
+        for station in stations
+    ]
+    return JsonResponse(results, safe=False)

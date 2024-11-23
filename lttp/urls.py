@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import Home, AvailableTrain, user_login, signup, Contact, Feedbacks, Profile, Bookings, BookingHistory, BookingDetails, Tickets, CancelBooking, VerifyTicket
+from app.views import Home, AvailableTrain, user_login, signup, Contact, Feedbacks, Profile, Bookings, BookingHistory, BookingDetails, Tickets, CancelBooking, VerifyTicket, search_stations
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -37,4 +37,5 @@ urlpatterns = [
     path('logout', auth_views.LogoutView.as_view(), name='logout'),
 
     path('profile', Profile.as_view(), name="profile"),
+    path('api/search-stations', search_stations, name='search_stations'),
 ]
