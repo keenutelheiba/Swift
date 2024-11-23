@@ -31,69 +31,59 @@
             
             {% url 'home' as url %}
             <li class="{% if request.path == url %}active{% endif %}">
-                <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home <span class="sr-only">(current)</span></a>
             </li>
             {% url 'verify_ticket' as url %}
             <li class="{% if request.path == url %}active{% endif %}">
-                <a class="nav-link" href="{% url 'verify_ticket' %}">Verify Ticket<span class="sr-only"></a>
+                <a class="nav-link" href="{% url 'verify_ticket' %}"><i class="fas fa-ticket-alt"></i> Verify Ticket</a>
             </li>
             {% url 'feedback' as url %}
             <li class="{% if request.path == url %}active{% endif %}">
-                <a class="nav-link" href="{% url 'feedback' %}">User Feedbacks</a>
+                <a class="nav-link" href="{% url 'feedback' %}"><i class="fas fa-comments"></i> User Feedbacks</a>
             </li>
             {% url 'contact' as url %}  
             <li class="{% if request.path == url %}active{% endif %}">
-                <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                <a class="nav-link" href="{% url 'contact' %}"><i class="fas fa-address-book"></i> Contact Us</a>
             </li>
         </ul>
 
         <ul class="navbar-nav">
-
-            <!-- this is when user is logged in -->
-
             {% if user.is_authenticated %}
-
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    Welcome, {{user.username}}
+                    <i class="fas fa-user"></i> Welcome, {{user.username}}
                 </a>
 
                 {% if user.is_superuser %}
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="admin/">Administrator</a>
+                    <a class="dropdown-item" href="admin/"><i class="fas fa-user-shield"></i> Administrator</a>
                 </div>
                 {% endif %}
 
                 {% if not user.is_superuser %}
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
-                    <a class="dropdown-item" href="{% url 'booking_history' %}">Booking History</a>
+                    <a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user-circle"></i> Profile</a>
+                    <a class="dropdown-item" href="{% url 'booking_history' %}"><i class="fas fa-history"></i> Booking History</a>
                 </div>
-
                 {% endif %}
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </li>
             {% endif %}
 
-            <!-- this is when user is not logged in -->
-
             {% if not user.is_authenticated %}
-
             {% url 'login' as url %}
             <li class="{% if request.path == url %}active{% endif %}">
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
             </li>
             {% url 'signup' as url %}
             <li class="{% if request.path == url %}active{% endif %}">
-                <a class="nav-link" href="{% url 'signup' %}">Register</a>
+                <a class="nav-link" href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Register</a>
             </li>
-
             {% endif %}
-            
         </ul>
     </div>
 </nav>
