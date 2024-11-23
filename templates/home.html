@@ -5,61 +5,59 @@
 {% endblock title %}
 
 {% block content %}
-
-    <!-- this part is for finding train -->
-    <div class="" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/5a/Vande_Bharat_Express_around_Mumbai.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <div class="hero-section">
+        <div class="overlay"></div>
         <div class="container">
-            <div class="row">
-
-                <!-- left part -->
-                <div class="col-lg-6 mt-5 mb-5 text-white" style="font-size: 35px;">
-                    <div class="pt-5">
-                        <div><p><b>Welcome To</b></p></div>
-                        <div><p><b>Real Time Ticketing Project</b></p></div>
-                        <div><p>Developed By <b>Team 37</b></p></div>
+            <div class="row align-items-center">
+                <!-- Welcome text with animation -->
+                <div class="col-lg-6 col-md-12 welcome-text">
+                    <div class="pt-4 pt-lg-5 text-white animate-text">
+                        <h1 class="fade-in"><b>Welcome To</b></h1>
+                        <h2 class="slide-in"><b>Real Time Ticketing Project</b></h2>
+                        <h3 class="fade-up"><b>Team 37</b></h3>
                     </div>
                 </div>
 
-                <!-- right part -->
-                <div class="col-lg-6 mx-auto mt-5 mb-5">
-                    <div class="card bg-dark">
+                <!-- Search form with animation -->
+                <div class="col-lg-6 col-md-12 py-4">
+                    <div class="search-card fade-in-up">
                         <form role="search" action="available_train">
                             <div class="form-row m-2 mt-4">
-                              <div class="col">
-                                <label for="rfrom" class="text-white">Route From:</label>
-                                <div class="station-search-container">
-                                  <input type="text" name="rfrom_display" id="rfrom" class="form-control station-search" 
-                                         placeholder="Search station..." autocomplete="off" required>
-                                  <input type="hidden" name="rfrom" id="rfrom_id">
-                                  <div id="fromResults" class="search-results"></div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="rfrom" class="text-white">Route From:</label>
+                                    <div class="station-search-container">
+                                        <input type="text" name="rfrom_display" id="rfrom" class="form-control station-search" 
+                                               placeholder="Search station..." autocomplete="off" required>
+                                        <input type="hidden" name="rfrom" id="rfrom_id">
+                                        <div id="fromResults" class="search-results"></div>
+                                    </div>
                                 </div>
-                              </div>
-                              <div class="col">
-                                <label for="to" class="text-white">Route To:</label>
-                                <div class="station-search-container">
-                                  <input type="text" name="to_display" id="to" class="form-control station-search"
-                                         placeholder="Search station..." autocomplete="off" required>
-                                  <input type="hidden" name="to" id="to_id">
-                                  <div id="toResults" class="search-results"></div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="to" class="text-white">Route To:</label>
+                                    <div class="station-search-container">
+                                        <input type="text" name="to_display" id="to" class="form-control station-search"
+                                               placeholder="Search station..." autocomplete="off" required>
+                                        <input type="hidden" name="to" id="to_id">
+                                        <div id="toResults" class="search-results"></div>
+                                    </div>
                                 </div>
-                              </div>
                             </div>
 
-                            <div class="form-row m-2 mt-2">
-                                <div class="col">
+                            <div class="form-row m-2">
+                                <div class="col-md-6 mb-3">
                                     <label for="date" class="text-white">Date:</label>
-                                  <input type="date" name="date" class="form-control" placeholder="Date" id="date">
+                                    <input type="date" name="date" class="form-control" id="date">
                                 </div>
-                                <div class="col">
+                                <div class="col-md-6 mb-3">
                                     <label for="ctype" class="text-white">Class:</label>
                                     <select name="ctype" id="ctype" class="form-control" required>
                                         <option value="{{form.class_type}}"></option>
                                     </select>
                                 </div>
-                              </div>
+                            </div>
 
-                              <div class="form-row m-2 mt-2">
-                                <div class="col">
+                            <div class="form-row m-2">
+                                <div class="col-md-6 mb-3">
                                     <label for="pa" class="text-white">Passenger(Adult):</label>
                                     <select name="pa" id="pa" class="form-control" required>
                                         <option selected>0</option>
@@ -70,7 +68,7 @@
                                         <option>5</option>
                                     </select>
                                 </div>
-                                <div class="col">
+                                <div class="col-md-6 mb-3">
                                     <label for="pc" class="text-white">Passenger(Child):</label>
                                     <select name="pc" id="pc" class="form-control" required>
                                         <option selected>0</option>
@@ -81,19 +79,19 @@
                                         <option>5</option>
                                     </select>
                                 </div>
-                              </div>
+                            </div>
 
-                              <div class="form-row">
-                                <div class="col text-warning pl-3">
-                                    <p>You can book maximum 5 seat! *</p>
+                            <div class="form-row m-2">
+                                <div class="col-12">
+                                    <p class="text-warning">You can book maximum 5 seats! *</p>
                                 </div>
-                              </div>
+                            </div>
 
-                              <div class="form-row">
-                                <div class="col pl-0">
-                                  <input type="submit" value="find" class="bg-info mb-4 mt-2">
+                            <div class="form-row m-2 mb-4">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-info btn-block">Find Train</button>
                                 </div>
-                              </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -101,53 +99,44 @@
         </div>
     </div>
 
-    <!-- bottom informative part -->
-    <div class="container">
+    <!-- Information cards section with hover effects -->
+    <div class="container py-5">
         <div class="row">
-
-            <div class="col-lg-4 mt-4 mb-4">
-                <div class="row">
-                    <div class="col-md-2 p-0">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="info-card hover-card">
+                    <div class="icon pulse">
                         <i class="fas fa-tags fa-2x text-primary"></i>
                     </div>
-                    <div class="col-md-10 card border-white p-0">
-                        <div class="card-body m-0 p-0">
-                            <h5 class="card-title">Get Train Tickets from the comfort of your home</h5>
-                            <p class="card-text">Book train tickets from anywhere using the robust ticketing platform exclusively built to provide the passengers with pleasant ticketing experience. Also check out the mobile app RailSeva to further extend your pleasure of booking train tickets.</p>
-                        </div>
+                    <div class="content">
+                        <h5>Get Train Tickets from the comfort of your home</h5>
+                        <p>Book train tickets from anywhere using the robust ticketing platform exclusively built to provide the passengers with pleasant ticketing experience.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4 mt-4 mb-4">
-                <div class="row">
-                    <div class="col-md-2 p-0">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="info-card">
+                    <div class="icon">
                         <i class="far fa-clock fa-2x text-primary"></i>
                     </div>
-                    <div class="col-md-10 card border-white p-0">
-                        <div class="card-body m-0 p-0">
-                            <h5 class="card-title">Train & Ticketing related information at your fingertips</h5>
-                            <p class="card-text">Checkout available seats, route information, fare information on real time basis with RailSeva App.</p>
-                        </div>
+                    <div class="content">
+                        <h5>Train & Ticketing related information at your fingertips</h5>
+                        <p>Checkout available seats, route information, fare information on real time basis with RailSeva App.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4 mt-4 mb-4">
-                <div class="row">
-                    <div class="col-md-2 p-0">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="info-card">
+                    <div class="icon">
                         <i class="fas fa-lock fa-2x text-primary"></i>
                     </div>
-                    <div class="col-md-10 card border-white p-0">
-                        <div class="card-body m-0 p-0">
-                            <h5 class="card-title">Pay Securely</h5>
-                            <p class="card-text">Pay using your convenient payment option. Indian Railway supports Visa, Master and UPI for your convenience.</p>
-                        </div>
+                    <div class="content">
+                        <h5>Pay Securely</h5>
+                        <p>Pay using your convenient payment option. Indian Railway supports Visa, Master and UPI for your convenience.</p>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
 {% endblock content %}
