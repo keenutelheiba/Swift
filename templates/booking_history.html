@@ -35,7 +35,7 @@
                 <td>{{booking.booking_date}}</td>
                 <td>{{booking.booking_time}}</td>
                 <td>{{booking.status}}</td>
-                <td><button type="submit" class="btn btn-info"><a href="booking_history/booking_detail/{{booking.id}}" class="text-white" style="text-decoration: none;">View Details</a></button></td>
+                <td><a href="{% url 'booking_detail' booking.id %}" class="btn btn-info text-white">View Details</a></td>
                 <td><button type="submit" class="btn btn-success"><a href="booking_history/ticket/{{booking.id}}" class="text-white" style="text-decoration: none;" target="_blank">Get Ticket</a></button></td>
                 <form action="cancel_booking" method="post">
                   {% csrf_token %}
@@ -54,5 +54,15 @@
 
 </div>
     
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
 {% endblock content %}
