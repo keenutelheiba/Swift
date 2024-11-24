@@ -54,19 +54,11 @@ class Train(models.Model):
 
 
 class Booking(models.Model):
-    status = (
-        ("Pending", "Pending"),
-        ("Accepted", "Accepted"),
-        ("Canceled", "Canceled"),
-    )
-    user = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT)
-    booking_date = models.DateField(auto_now_add=True, null=True, blank=True)
-    booking_time = models.TimeField(auto_now_add=True, null=True, blank=True)
-    status = models.CharField(max_length=50, default='Pending', choices=status, auto_created=True, null=True, blank=True)
-    travel_date = models.DateField(null=True, blank=True)
-    travel_dt = models.DateTimeField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    booking_date = models.DateField(auto_now_add=True)
+    booking_time = models.TimeField(auto_now_add=True)
+    travel_dt = models.DateTimeField()
+    status = models.CharField(max_length=20, default='Confirmed')
 
 
 class BookingDetail(models.Model):

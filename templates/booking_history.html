@@ -36,16 +36,16 @@
                 <td>{{booking.booking_time}}</td>
                 <td>{{booking.status}}</td>
                 <td><a href="{% url 'booking_detail' booking.id %}" class="btn btn-info text-white">View Details</a></td>
-                <td><button type="submit" class="btn btn-success"><a href="booking_history/ticket/{{booking.id}}" class="text-white" style="text-decoration: none;" target="_blank">Get Ticket</a></button></td>
-                <form action="cancel_booking" method="post">
-                  {% csrf_token %}
-                  {% with date=booking.travel_dt|date:current_date %}
-                  {% if date > 1 %}
-                  <td><button type="submit" class="btn btn-danger">Cancel Booking</button></td>
-                  <input type="hidden" name="booking_id" value="{{booking.pk}}">
-                  {% endif %}
-                  {% endwith %}
-                </form>
+                <td><a href="booking_history/ticket/{{booking.id}}" class="btn btn-success text-white" style="text-decoration: none;" target="_blank">Get Ticket</a></td>
+                <td>
+                    {% if booking.travel_dt.date >= current_date %}
+                        <form action="{% url 'cancel_booking' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="booking_id" value="{{booking.id}}">
+                            <button type="submit" class="btn btn-danger">Cancel Booking</button>
+                        </form>
+                    {% endif %}
+                </td>
               </tr>
               {% endfor %}
             </tbody>

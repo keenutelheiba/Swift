@@ -34,7 +34,7 @@ urlpatterns = [
 
     path('login', user_login, name="login"),
     path('signup', signup, name="signup"),
-    path('logout', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='home.html', next_page='/'), name='logout'),
 
     path('profile', Profile.as_view(), name="profile"),
     path('api/search-stations', search_stations, name='search_stations'),

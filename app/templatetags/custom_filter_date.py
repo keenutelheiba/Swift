@@ -10,15 +10,17 @@ register = template.Library()
 @register.filter(name="date")
 def date(travel_dt, current_date):
     try:
+        # Convert travel_dt to datetime if it's a string
+        if isinstance(travel_dt, str):
+            travel_dt = datetime.strptime(travel_dt, '%Y-%m-%d %H:%M:%S')
+        
+        # Calculate the difference
         result = travel_dt - current_date
-        result = str(result)
-        time = result.split()
-        x = time[0]
-        x = int(x)
-        return x
-
-    except:
-        return redirect('home')
+        days = result.days
+        return days
+    except Exception as e:
+        print(f"Date comparison error: {e}")
+        return -1  # Return negative number to ensure button doesn't show
 
     
 # # this filter has been created to to show book button if current date is smaller than travel date
