@@ -31,15 +31,7 @@
                                     ></textarea>
                                 </div>
                                 <div class="text-right">
-                                    {% if user.is_authenticated %}
-                                        <button type="submit" class="btn btn-primary feedback-submit">
-                                            <i class="fas fa-paper-plane"></i> Submit Feedback
-                                        </button>
-                                    {% else %}
-                                        <button type="button" class="btn btn-secondary" disabled>
-                                            Please login to submit feedback
-                                        </button>
-                                    {% endif %}
+                                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
                                 </div>
                             </form>
                         </div>
@@ -55,7 +47,13 @@
                                 <div class="feedback-user">
                                     <i class="fas fa-user-circle"></i>
                                     <div class="user-info">
-                                        <h6 class="mb-0">{% if feedback.name %}{{ feedback.name }}{% else %}Anonymous User{% endif %}</h6>
+                                        <h6 class="mb-0">
+                                            {% if feedback.name %}
+                                                {{ feedback.name }}
+                                            {% else %}
+                                                Anonymous User
+                                            {% endif %}
+                                        </h6>
                                         <small class="text-muted">
                                             <i class="far fa-clock"></i>
                                             {{ feedback.created_at|date:"F d, Y" }}

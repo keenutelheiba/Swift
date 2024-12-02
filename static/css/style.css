@@ -521,3 +521,97 @@ input[type="date"]::-webkit-calendar-picker {
     border-color: #80bdff;
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    min-width: max-content;
+    white-space: nowrap;
+    display: inline-block;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    width: auto;
+    padding-right: 25px;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+/* Additional style to ensure text is fully visible */
+.btn-info span {
+    display: inline-block;
+    width: 100%;
+}
+
+/* Specific fix for View Detail button */
+a.btn-info {
+    box-sizing: content-box;
+    position: relative;
+    z-index: 1;
+}
+
+/* Feedback styles */
+.feedback-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;  /* Space between icon and text */
+}
+
+.feedback-user i {
+    font-size: 24px;
+    color: #007bff;
+}
+
+.user-info {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.user-info h6 {
+    margin: 0;
+    color: #333;
+    font-weight: 500;
+}
+
+.user-info small {
+    display: block;
+    color: #666;
+}
+
+.feedback-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.feedback-content {
+    padding: 15px;
+}
+
+.feedback-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}

@@ -94,7 +94,51 @@ document.addEventListener('DOMContentLoaded', function() {
         {% endfor %}
     ];
 
+    let selectedIndex = -1;
+
+    // Handle keyboard navigation
+    trainInput.addEventListener('keydown', function(e) {
+        const items = trainResults.getElementsByClassName('search-result-item');
+        
+        if (items.length === 0) return;
+
+        // Remove previous selection
+        if (selectedIndex >= 0 && selectedIndex < items.length) {
+            items[selectedIndex].classList.remove('selected');
+        }
+
+        switch(e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                selectedIndex = (selectedIndex + 1) % items.length;
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                selectedIndex = selectedIndex <= 0 ? items.length - 1 : selectedIndex - 1;
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (selectedIndex >= 0) {
+                    const selectedItem = items[selectedIndex];
+                    trainInput.value = selectedItem.textContent;
+                    trainResults.style.display = 'none';
+                    selectedIndex = -1;
+                }
+                return;
+            default:
+                return; // Let other keys work normally
+        }
+
+        // Highlight new selection
+        if (selectedIndex >= 0) {
+            items[selectedIndex].classList.add('selected');
+            items[selectedIndex].scrollIntoView({ block: 'nearest' });
+        }
+    });
+
+    // Existing input event listener
     trainInput.addEventListener('input', function() {
+        selectedIndex = -1; // Reset selection when input changes
         const searchTerm = this.value.toLowerCase();
         trainResults.innerHTML = '';
         
@@ -116,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 div.addEventListener('click', () => {
                     trainInput.value = match;
                     trainResults.style.display = 'none';
+                    selectedIndex = -1;
                 });
                 trainResults.appendChild(div);
             });
@@ -124,12 +169,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Close search results when clicking outside
+    // Existing click event listener
     document.addEventListener('click', function(e) {
         if (!trainInput.contains(e.target) && !trainResults.contains(e.target)) {
             trainResults.style.display = 'none';
+            selectedIndex = -1;
         }
     });
 });
 </script>
+
+<style>
+/* Add these styles to highlight selected item */
+.search-result-item.selected {
+    background-color: #e9ecef;
+}
+
+.search-results {
+    max-height: 200px;
+    overflow-y: auto;
+}
+</style>
 {% endblock content %}
