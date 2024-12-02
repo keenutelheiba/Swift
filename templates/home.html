@@ -45,8 +45,16 @@
 
                             <div class="form-row m-2">
                                 <div class="col-md-6 mb-3">
-                                    <label for="date" class="text-white">Date:</label>
-                                    <input type="date" name="date" class="form-control" id="date">
+                                    <label for="date" class="text-white">Departure Date:</label>
+                                    <div class="date-picker-container">
+                                        <input type="date" 
+                                               name="date" 
+                                               id="date" 
+                                               class="form-control date-picker" 
+                                               min="<?php echo date('Y-m-d'); ?>" 
+                                               required>
+                                        <i class="fas fa-calendar-alt date-icon"></i>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="ctype" class="text-white">Class:</label>

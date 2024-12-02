@@ -20,12 +20,13 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="train"><i class="fas fa-train"></i> Train Name</label>
-                                <select name="train" id="train" class="form-control custom-select" required>
-                                    <option value="">Select Train</option>
-                                    {% for train in train %}
-                                    <option value="{{train.name}}">{{train.name}}</option>
-                                    {% endfor %}
-                                </select>
+                                <div class="train-search-container">
+                                    <input type="text" name="train" id="train" 
+                                           class="form-control train-search" 
+                                           placeholder="Search train..." 
+                                           autocomplete="off" required>
+                                    <div id="trainResults" class="search-results"></div>
+                                </div>
                             </div>
                         </div>
                         
@@ -82,4 +83,53 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const trainInput = document.getElementById('train');
+    const trainResults = document.getElementById('trainResults');
+    const trains = [
+        {% for train in train %}
+            "{{train.name}}",
+        {% endfor %}
+    ];
+
+    trainInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        trainResults.innerHTML = '';
+        
+        if (searchTerm.length < 1) {
+            trainResults.style.display = 'none';
+            return;
+        }
+
+        const matches = trains.filter(train => 
+            train.toLowerCase().includes(searchTerm)
+        );
+
+        if (matches.length > 0) {
+            trainResults.style.display = 'block';
+            matches.forEach(match => {
+                const div = document.createElement('div');
+                div.className = 'search-result-item';
+                div.textContent = match;
+                div.addEventListener('click', () => {
+                    trainInput.value = match;
+                    trainResults.style.display = 'none';
+                });
+                trainResults.appendChild(div);
+            });
+        } else {
+            trainResults.style.display = 'none';
+        }
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!trainInput.contains(e.target) && !trainResults.contains(e.target)) {
+            trainResults.style.display = 'none';
+        }
+    });
+});
+</script>
 {% endblock content %}

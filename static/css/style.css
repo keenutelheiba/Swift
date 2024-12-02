@@ -365,3 +365,159 @@
 .not-verified .result-icon {
     color: #dc3545;
 }
+
+.train-search-container {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.search-result-item {
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+    background-color: #f8f9fa;
+}
+
+.train-search:focus {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.date-picker-container {
+    position: relative;
+}
+
+.date-picker {
+    padding: 12px 15px;
+    font-size: 16px;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.date-picker:hover {
+    background-color: #fff;
+    border-color: #80bdff;
+}
+
+.date-picker:focus {
+    background-color: #fff;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.date-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0062cc;
+    pointer-events: none;
+}
+
+/* Calendar popup styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Make calendar popup larger */
+input[type="date"]::-webkit-datetime-edit {
+    padding: 0 5px;
+}
+
+/* Make calendar popup larger */
+::-webkit-calendar-picker-indicator {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    right: 5px;
+    filter: invert(0.5);
+    transition: all 0.3s ease;
+}
+
+::-webkit-calendar-picker-indicator:hover {
+    filter: invert(0.8);
+    transform: scale(1.1);
+}
+
+input[type="date"] {
+    position: relative;
+    padding-right: 40px;
+}
+
+/* Increase the size of the calendar dropdown */
+input[type="date"]::-webkit-datetime-edit {
+    font-size: 16px;
+    padding: 8px;
+}
+
+input[type="date"]::-webkit-calendar-picker {
+    font-size: 16px;
+}
+
+/* Make the calendar popup larger */
+::-webkit-datetime-edit-fields-wrapper {
+    padding: 5px;
+}
+
+::-webkit-datetime-edit-text {
+    padding: 0 5px;
+}
+
+::-webkit-datetime-edit-month-field,
+::-webkit-datetime-edit-day-field,
+::-webkit-datetime-edit-year-field {
+    padding: 2px 5px;
+}
+
+/* Custom styling for the date input */
+.form-control[type="date"] {
+    height: 45px;
+    font-size: 16px;
+    padding: 8px 40px 8px 12px;
+    background-color: #fff;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-control[type="date"]:hover {
+    border-color: #80bdff;
+}
+
+.form-control[type="date"]:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
