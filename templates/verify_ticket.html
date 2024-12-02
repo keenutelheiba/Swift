@@ -5,73 +5,81 @@
 {% endblock title %}
 
 {% block content %}
-
-    <div class="container verify_ticket">
-        <div class="row">
-            <div class="col-lg-12 text-center p-4 text-success">
-                <h4>Verify Your Ticket</h4>
+<div class="verify-ticket-container">
+    <div class="container">
+        <div class="verification-card">
+            <div class="card-header text-center">
+                <i class="fas fa-ticket-alt verification-icon"></i>
+                <h4 class="mt-3">Verify Your Ticket</h4>
+                <p class="text-muted">Enter your ticket details below</p>
             </div>
 
-            <!-- this section is about the form to check ticket -->
-
-            <div class="col-lg-12 mt-2 mb-2">
-                <div class="row">
-                    <div class="col-lg-10 bg-secondary pt-3 pb-4 text-white mx-auto">
-                        <form role="search" action="verify_ticket">
-                            <div class="row">   
-                                <div class="col-lg-3">
-                                    <label for="train">Train Name: </label>
-                                    <select name="train" id="train" class="form-control" required>
-                                        <option default value="">Select</option>
-                                        {% for train in train %}
-                                        <option value="{{train.name}}">{{train.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-lg-3">
-                                    <label for="date">Travel Date: </label>
-                                    <input class="form-control" type="date" name="date" id="date" required>
-                                </div>
-                                <div class="col-lg-3">
-                                    <label for="tid">Ticket ID: </label>
-                                    <input class="form-control" type="text" name="tid" id="tid" placeholder="enter your ticket id" required>
-                                </div>
-                                <div class="col-lg-3">
-                                    <button type="submit" class="btn btn-success mt-2 ml-4 p-4">Check Ticket</button>
-                                </div>
+            <div class="card-body">
+                <form role="search" action="verify_ticket" class="verification-form">
+                    <div class="row">   
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="train"><i class="fas fa-train"></i> Train Name</label>
+                                <select name="train" id="train" class="form-control custom-select" required>
+                                    <option value="">Select Train</option>
+                                    {% for train in train %}
+                                    <option value="{{train.name}}">{{train.name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
-                        </form>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="date"><i class="fas fa-calendar"></i> Travel Date</label>
+                                <input class="form-control" type="date" name="date" id="date" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="tid"><i class="fas fa-ticket"></i> Ticket ID</label>
+                                <input class="form-control" type="text" name="tid" id="tid" 
+                                       placeholder="Enter your ticket ID" required>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- this is section is for gettting verification result -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary verify-btn">
+                            <i class="fas fa-search"></i> Verify Ticket
+                        </button>
+                    </div>
+                </form>
+            </div>
 
             {% if request.GET %}
-            {% if request.GET.train == ticket.train_name and request.GET.tid == ticket.id and request.GET.date == ticket.travel_date %}
+                <div class="verification-result">
+                    <div class="result-header text-center">
+                        <h5>Verification Result</h5>
+                        <div class="ticket-details">
+                            <span><i class="fas fa-train"></i> {{request.GET.train}}</span>
+                            <span><i class="fas fa-calendar"></i> {{request.GET.date}}</span>
+                            <span><i class="fas fa-ticket"></i> {{request.GET.tid}}</span>
+                        </div>
+                    </div>
 
-            <div class="col-lg-12 pt-4 text-center">
-                <h4>Ticket Verification Result:</h4>
-                <h6>Train Name: {{request.GET.train_name}} | Travel Date: {{request.GET.date}} | Ticket ID: {{request.GET.tid}}</h6>
-            </div>
-            <div class="col-lg-12 pt-4 text-success text-center">
-                <h1><i class="fa-solid fa-circle-check"></i></h1>
-                <h3>This ticket is verified.</h3>
-            </div>
-            {% else %}
-            <div class="col-lg-12 pt-4 text-center">
-                <h4>Ticket Verification Result:</h4>
-                <h6>Train Name: {{request.GET.train}} | Travel Date: {{request.GET.date}} | Ticket ID: {{request.GET.tid}}</h6>
-            </div>
-            <div class="col-lg-12 pt-4 text-danger text-center">
-                <h1><i class="fa-solid fa-circle-xmark"></i></h1>
-                <h3>This ticket is not verified.</h3>
-            </div>
-
-            {% endif %}    
+                    {% if request.GET.train == ticket.train_name and request.GET.tid == ticket.id and request.GET.date == ticket.travel_date %}
+                        <div class="result-body verified">
+                            <i class="fas fa-check-circle result-icon"></i>
+                            <h3>Ticket Verified</h3>
+                            <p>This is a valid ticket</p>
+                        </div>
+                    {% else %}
+                        <div class="result-body not-verified">
+                            <i class="fas fa-times-circle result-icon"></i>
+                            <h3>Not Verified</h3>
+                            <p>This ticket could not be verified</p>
+                        </div>
+                    {% endif %}
+                </div>
             {% endif %}
-          
         </div>
     </div>
-
+</div>
 {% endblock content %}
