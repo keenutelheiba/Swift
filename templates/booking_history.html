@@ -7,7 +7,11 @@
 {% block content %}
 <div class="booking-history-container">
     <div class="col-lg-12 text-center p-4">
-        <h4 class="text-primary">Your Booking History</h4>
+        {% if user.is_superuser %}
+            <h4 class="text-primary">All Booking History</h4>
+        {% else %}
+            <h4 class="text-primary">Your Booking History</h4>
+        {% endif %}
     </div>
 
     <!-- Search and Filter Section -->
@@ -40,75 +44,68 @@
     <!-- Booking Table -->
     <div class="col-lg-12 m-1 mx-auto booking-table-container">
         <div class="table-responsive">
-            <table class="table table-hover" id="bookingTable">
-                <thead class="bg-dark text-white text-center">
+            <table class="table table-hover">
+                <thead class="thead-dark">
                     <tr>
-                        <th scope="col" class="sortable" data-sort="id">Booking ID ↕</th>
-                        <th scope="col" class="sortable" data-sort="date">Booking Date ↕</th>
-                        <th scope="col" class="sortable" data-sort="time">Booking Time ↕</th>
-                        <th scope="col" class="sortable" data-sort="status">Status ↕</th>
+                        <th scope="col" class="sortable">Booking ID</th>
+                        {% if user.is_superuser %}
+                            <th scope="col" class="sortable">User</th>
+                        {% endif %}
+                        <th scope="col" class="sortable">Train</th>
+                        <th scope="col" class="sortable">From</th>
+                        <th scope="col" class="sortable">To</th>
+                        <th scope="col" class="sortable">Travel Date</th>
+                        <th scope="col" class="sortable">Status</th>
+                        <th scope="col" class="sortable">Booking Date</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for booking in booking %}
-                    <tr class="text-center booking-row" 
-                        data-id="{{booking.id}}"
-                        data-date="{{booking.booking_date}}"
-                        data-status="{{booking.status}}">
-                        <th scope="row">{{booking.id}}</th>
-                        <td>{{booking.booking_date}}</td>
-                        <td>{{booking.booking_time}}</td>
-                        <td><span class="badge {% if booking.status == 'Confirmed' %}badge-success{% else %}badge-danger{% endif %}">
-                            {{booking.status}}
-                        </span></td>
-                        <td class="action-buttons">
-                            <div class="btn-group action-btn-group" role="group">
-                                <!-- View Details Button -->
-                                <a href="{% url 'booking_detail' booking.id %}" 
-                                   class="btn btn-info btn-sm action-btn"
-                                   data-toggle="tooltip" 
-                                   data-placement="top" 
-                                   title="View Booking Details">
-                                    <i class="fas fa-info-circle"></i>
-                                    <span class="btn-text">Details</span>
-                                </a>
-
-                                <!-- Ticket Button -->
-                                <a href="booking_history/ticket/{{booking.id}}" 
-                                   class="btn btn-success btn-sm action-btn"
-                                   data-toggle="tooltip" 
-                                   data-placement="top" 
-                                   title="Download Ticket"
-                                   target="_blank">
-                                    <i class="fas fa-ticket-alt"></i>
-                                    <span class="btn-text">Ticket</span>
-                                </a>
-
-                                <!-- Cancel Button - Only show if travel date is in future -->
-                                {% if booking.travel_dt.date >= current_date %}
-                                <form action="{% url 'cancel_booking' %}" 
-                                      method="post" 
-                                      class="d-inline cancel-form"
-                                      onsubmit="return confirmCancel(event)">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="booking_id" value="{{booking.id}}">
-                                    <button type="submit" 
-                                            class="btn btn-danger btn-sm action-btn"
-                                            data-toggle="tooltip" 
-                                            data-placement="top" 
-                                            title="Cancel Booking">
-                                        <i class="fas fa-times"></i>
-                                        <span class="btn-text">Cancel</span>
-                                    </button>
-                                </form>
-                                {% endif %}
-                            </div>
+                    {% for book in booking %}
+                    <tr>
+                        <td>{{ book.id }}</td>
+                        {% if user.is_superuser %}
+                            <td>{{ book.user.username }}</td>
+                        {% endif %}
+                        <td>{{ book.train }}</td>
+                        <td>{{ book.source }}</td>
+                        <td>{{ book.destination }}</td>
+                        <td>{{ book.travel_date|date:"d M, Y" }}</td>
+                        <td>
+                            <span class="badge {% if book.status == 'Confirmed' %}badge-success{% else %}badge-danger{% endif %}">
+                                {{ book.status }}
+                            </span>
+                        </td>
+                        <td>{{ book.booking_date|date:"d M, Y" }}</td>
+                        <td>
+                            <a href="{% url 'booking_detail' book.id %}" class="btn btn-info mb-1" 
+                               data-toggle="tooltip" title="View Details" style="width: 120px;">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                            {% if book.status == 'Confirmed' and book.has_ticket %}
+                            <a href="{% url 'ticket' book.id %}" class="btn btn-success mb-1" 
+                               data-toggle="tooltip" title="Get Ticket" style="width: 120px;">
+                                <i class="fas fa-ticket-alt"></i> Get Ticket
+                            </a>
+                            {% endif %}
+                            {% if book.status == 'Confirmed' %}
+                            <form action="{% url 'cancel_booking' %}" method="post" class="d-inline" 
+                                  onsubmit="return confirmCancel(event);" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="booking_id" value="{{ book.id }}">
+                                <button type="submit" class="btn btn-danger mb-1" 
+                                        data-toggle="tooltip" title="Cancel Booking" style="width: 120px;">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </form>
+                            {% endif %}
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="text-center">No bookings found</td>
+                        <td colspan="{% if user.is_superuser %}9{% else %}8{% endif %}" class="text-center">
+                            No bookings found
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

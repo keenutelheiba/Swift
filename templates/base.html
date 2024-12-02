@@ -37,6 +37,11 @@
             <li class="{% if request.path == url %}active{% endif %}">
                 <a class="nav-link" href="{% url 'verify_ticket' %}"><i class="fas fa-ticket-alt"></i> Verify Ticket</a>
             </li>
+            {% if user.is_superuser %}
+            <li class="{% if request.path == '/booking_history' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'booking_history' %}"><i class="fas fa-history"></i> Booking History</a>
+            </li>
+            {% endif %}
             {% url 'feedback' as url %}
             <li class="{% if request.path == url %}active{% endif %}">
                 <a class="nav-link" href="{% url 'feedback' %}"><i class="fas fa-comments"></i> User Feedbacks</a>

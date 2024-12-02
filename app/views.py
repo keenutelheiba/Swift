@@ -237,15 +237,45 @@ class Bookings(View):
 
 class BookingHistory(View):
     def get(self, request):
-        if request.user.is_authenticated:
-            bookings = Booking.objects.filter(user=request.user).order_by('-id')
-            current_date = datetime.now().date()
-            context = {
-                'booking': bookings,
-                'current_date': current_date
-            }
-            return render(request, 'booking_history.html', context)
-        return redirect('login')
+        if not request.user.is_authenticated:
+            messages.warning(request, "Please login first")
+            return redirect('login')
+            
+        try:
+            # Get bookings based on user type
+            if request.user.is_superuser:
+                bookings = Booking.objects.select_related('user').prefetch_related(
+                    'details', 'ticket_set'
+                ).all().order_by('-booking_date')
+            else:
+                bookings = Booking.objects.select_related('user').prefetch_related(
+                    'details', 'ticket_set'
+                ).filter(user=request.user).order_by('-booking_date')
+            
+            # Process booking data
+            booking_data = []
+            for booking in bookings:
+                booking_detail = booking.details.first()
+                ticket = booking.ticket_set.first()  # Get associated ticket
+                if booking_detail:
+                    data = {
+                        'id': booking.id,
+                        'user': booking.user,
+                        'train': booking_detail.train,
+                        'source': booking_detail.source,
+                        'destination': booking_detail.destination,
+                        'travel_date': booking_detail.travel_date,
+                        'status': booking.status,
+                        'booking_date': booking.booking_date,
+                        'has_ticket': ticket is not None  # Check if ticket exists
+                    }
+                    booking_data.append(data)
+            
+            return render(request, 'booking_history.html', {'booking': booking_data})
+            
+        except Exception as e:
+            messages.error(request, f"Error retrieving booking history: {str(e)}")
+            return redirect('home')
 
 
 # booking detail page view

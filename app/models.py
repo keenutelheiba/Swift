@@ -81,7 +81,7 @@ class Booking(models.Model):
 
 
 class BookingDetail(models.Model):
-    booking = models.OneToOneField(Booking, null=True, blank=True, on_delete=models.CASCADE)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='details')
     train = models.CharField(max_length=255, null=True, blank=True)
     source = models.CharField(max_length=255, null=True, blank=True)
     destination = models.CharField(max_length=255, null=True, blank=True)
