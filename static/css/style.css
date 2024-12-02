@@ -110,3 +110,154 @@
 }
 
 /* end: css for profile page */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(120deg, #3498db, #8e44ad);
+}
+
+.login-header {
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+}
+
+.login-icon {
+    font-size: 50px;
+    color: #0062cc;
+    margin-bottom: 15px;
+}
+
+.login-form {
+    padding: 20px 40px;
+}
+
+.input-group-text {
+    background: transparent;
+    border-right: none;
+}
+
+.form-control {
+    border-left: none;
+}
+
+.input-group-text i {
+    color: #0062cc;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.btn-primary {
+    background: #0062cc;
+    border: none;
+    padding: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #004c9e;
+    transform: translateY(-2px);
+}
+
+#formFooter {
+    background: #f8f9fa;
+    border-radius: 0 0 10px 10px;
+    padding: 25px;
+    text-align: center;
+}
+
+#formFooter p {
+    color: #6c757d;
+}
+
+.underlineHover {
+    color: #0062cc;
+    display: inline-block;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.underlineHover:hover {
+    text-decoration: none;
+    color: #004c9e;
+    transform: translateY(-2px);
+}
+
+.signup-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(120deg, #3498db, #8e44ad);
+    padding: 20px 0;
+}
+
+.signup-header {
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+}
+
+.signup-icon {
+    font-size: 50px;
+    color: #0062cc;
+    margin-bottom: 15px;
+}
+
+.signup-form {
+    padding: 20px 40px;
+}
+
+.signup-form .form-group {
+    margin-bottom: 20px;
+}
+
+.signup-form .input-group-text {
+    background: transparent;
+    border-right: none;
+}
+
+.signup-form .form-control {
+    border-left: none;
+}
+
+.signup-form .input-group-text i {
+    color: #0062cc;
+    width: 16px;
+}
+
+.signup-form .form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.signup-form .btn-primary {
+    background: #0062cc;
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.signup-form .btn-primary:hover {
+    background: #004c9e;
+    transform: translateY(-2px);
+}
+
+#formContent {
+    max-width: 600px;
+    margin: auto;
+}
+
+.fadeIn {
+    animation: fadeIn ease-in 1s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

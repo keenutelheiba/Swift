@@ -5,10 +5,14 @@
 {% endblock title %}
 
 {% block content %}
+<div class="signup-container">
     <div class="wrapper fadeInDown">
         <div id="formContent">
-            <div class="fadeIn first">
-                <h4 class="mt-2">User Registration</h4>
+            <!-- Icon and Title -->
+            <div class="fadeIn first signup-header">
+                <i class="fas fa-user-plus signup-icon"></i>
+                <h4 class="mt-2">Create Account</h4>
+                <p class="text-muted">Join our community today</p>
             </div>
 
             {% if messages %}
@@ -22,23 +26,82 @@
                 {% endfor %}
             {% endif %}
 
-            <form method="post" action="{% url 'signup' %}">
+            <form method="post" action="{% url 'signup' %}" class="signup-form">
                 {% csrf_token %}
-                <input type="text" id="first_name" class="fadeIn second" name="first_name" 
-                       placeholder="First Name" required>
-                <input type="text" id="last_name" class="fadeIn second" name="last_name" 
-                       placeholder="Last Name" required>
-                <input type="text" id="username" class="fadeIn second" name="username" 
-                       placeholder="Username" required>
-                <input type="email" id="email" class="fadeIn second" name="email" 
-                       placeholder="Email Address" required>
-                <input type="text" id="phone" class="fadeIn second" name="phone" 
-                       placeholder="Mobile No" required>
-                <input type="password" id="password1" class="fadeIn third" name="password1" 
-                       placeholder="Password" required>
-                <input type="password" id="password2" class="fadeIn third" name="password2" 
-                       placeholder="Re-Enter Password" required>
-                <input type="submit" class="fadeIn fourth" value="Sign Up">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" id="first_name" class="fadeIn second form-control" 
+                                   name="first_name" placeholder="First Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" id="last_name" class="fadeIn second form-control" 
+                                   name="last_name" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
+                        </div>
+                        <input type="text" id="username" class="fadeIn second form-control" 
+                               name="username" placeholder="Username" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <input type="email" id="email" class="fadeIn second form-control" 
+                               name="email" placeholder="Email Address" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        <input type="text" id="phone" class="fadeIn second form-control" 
+                               name="phone" placeholder="Mobile No" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input type="password" id="password1" class="fadeIn third form-control" 
+                               name="password1" placeholder="Password" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input type="password" id="password2" class="fadeIn third form-control" 
+                               name="password2" placeholder="Re-Enter Password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="fadeIn fourth btn btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
             </form>
 
             <div id="formFooter">
@@ -46,4 +109,5 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}
