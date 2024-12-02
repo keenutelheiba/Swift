@@ -141,6 +141,7 @@ class Ticket(models.Model):
 class Feedback(models.Model):
     name = models.CharField(verbose_name=_("user name"), max_length=255, null=True, blank=True)
     feedback = models.TextField(null=True, blank=True)
+    image = models.ImageField(upload_to='feedback_images/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 

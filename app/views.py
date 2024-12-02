@@ -461,35 +461,26 @@ class Contact(View):
 
 class Feedbacks(View):
     def get(self, request):
-        feedback = Feedback.objects.all().order_by('-id')
+        feedback = Feedback.objects.all().order_by('-created_at')
         return render(request, 'feedback.html', {'feedback': feedback})
 
     def post(self, request):
-        user = request.user
-        if user.is_authenticated:
-            comment = request.POST['feedback']
-
-            if comment == '':
-                messages.warning(request, "please write something first and then submit feedback.")
-                return redirect('feedback')
+        if request.user.is_authenticated:
+            feedback_text = request.POST.get('feedback')
+            image = request.FILES.get('image')
             
-            else:
-                # Get display name based on available user info
-                display_name = user.get_full_name()
-                if not display_name.strip():  # If full name is empty
-                    display_name = user.username
-                    
+            if feedback_text:
                 feedback = Feedback(
-                    name=display_name,
-                    feedback=comment
+                    name=f"{request.user.first_name} {request.user.last_name}",
+                    feedback=feedback_text,
+                    image=image
                 )
                 feedback.save()
-                messages.success(request, 'Thanks for your feedback!')
-                return redirect('feedback')
-
-        else:
-            messages.warning(request, "Please login first to post feedback.")
+                messages.success(request, "Thank you for your feedback!")
             return redirect('feedback')
+        else:
+            messages.warning(request, "Please login first to give feedback")
+            return redirect('login')
 
 
 # verify ticket page view
