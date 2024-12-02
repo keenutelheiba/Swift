@@ -615,3 +615,25 @@ a.btn-info {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
+
+.feedback-image {
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer; /* Add cursor pointer to indicate clickability */
+}
+
+.zoom-image {
+    transition: transform 0.3s ease;
+}
+
+.zoom-image:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.zoomed {
+    transform: scale(2); /* Zoom in on click */
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    position: relative;
+}

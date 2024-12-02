@@ -471,7 +471,7 @@ class Feedbacks(View):
             
             if feedback_text:
                 feedback = Feedback(
-                    name=f"{request.user.first_name} {request.user.last_name}",
+                    name=request.user.username,
                     feedback=feedback_text,
                     image=image
                 )
