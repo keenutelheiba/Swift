@@ -7,6 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from app.forms import TrainForm
 from datetime import timezone, datetime, timedelta
 from django.db.models import Q
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import os
 
 
 # Create your views here.
@@ -485,10 +488,48 @@ class VerifyTicket(View):
 
 class Profile(View):
     def get(self, request):
-        user = request.user
-        if user.is_authenticated:
+        if request.user.is_authenticated:
             return render(request, 'profile.html')
         else:
+            messages.warning(request, "Please login first to view profile")
+            return redirect('login')
+            
+    def post(self, request):
+        if request.user.is_authenticated:
+            user = request.user
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            
+            try:
+                # Handle photo upload
+                if 'photo' in request.FILES:
+                    photo = request.FILES['photo']
+                    
+                    # Delete old photo if it exists
+                    if user.photo:
+                        if os.path.isfile(user.photo.path):
+                            os.remove(user.photo.path)
+                    
+                    # Save new photo
+                    user.photo = photo
+                
+                # Update other user information
+                user.first_name = first_name
+                user.last_name = last_name
+                user.email = email
+                user.phone = phone
+                
+                user.save()
+                messages.success(request, "Profile updated successfully!")
+                
+            except Exception as e:
+                messages.error(request, f"Error updating profile: {str(e)}")
+                
+            return redirect('profile')
+        else:
+            messages.warning(request, "Please login first to update profile")
             return redirect('login')
 
 def search_stations(request):

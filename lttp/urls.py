@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from app.views import Home, AvailableTrain, user_login, signup, Contact, Feedbacks, Profile, Bookings, BookingHistory, BookingDetails, Tickets, CancelBooking, VerifyTicket, search_stations
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,4 +40,4 @@ urlpatterns = [
 
     path('profile', Profile.as_view(), name="profile"),
     path('api/search-stations', search_stations, name='search_stations'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

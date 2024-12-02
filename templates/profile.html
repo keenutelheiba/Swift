@@ -5,22 +5,28 @@
 {% endblock title %}
 
 {% block content %}
-
     {% if user.is_authenticated %}
-
         <div class="container emp-profile">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="https://www.nicepng.com/png/detail/72-729987_big-image-user-clipart-png.png"
-                                 alt=""/>
+                            {% if user.photo %}
+                                <img src="{{ user.photo.url }}" alt="Profile Picture"/>
+                            {% else %}
+                                <img src="https://www.nicepng.com/png/detail/72-729987_big-image-user-clipart-png.png" alt="Default Profile"/>
+                            {% endif %}
+                            <div class="file btn btn-lg btn-primary">
+                                Change Photo
+                                <input type="file" name="photo" accept="image/*"/>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6" style="padding-top:50px;">
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label>Username</label>
                                     </div>
@@ -28,28 +34,41 @@
                                         <p>{{ user.username }}</p>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label>Name</label>
+                                        <label>First Name</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>{{ user.first_name }} {{ user.last_name }}</p>
+                                        <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" required>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label>Last Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label>Email</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>{{ user.email }}</p>
+                                        <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label>Phone</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <p>{{ user.phone }}</p>
+                                        <input type="text" class="form-control" name="phone" value="{{ user.phone }}" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +77,16 @@
                 </div>
             </form>
         </div>
-
     {% endif %}
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock content %}
