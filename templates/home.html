@@ -20,71 +20,69 @@
 
                 <!-- Search Form -->
                 <div class="col-lg-6 col-md-12">
-                    <div class="card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); backdrop-filter: blur(10px); padding: 30px; margin: 20px 0;">
+                    <div class="card" style="background: rgba(255, 255, 255, 0.98); border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); backdrop-filter: blur(20px); padding: 30px; margin: 20px 0;">
                         <form role="search" action="available_train">
                             <div class="form-row m-2 mt-4">
                                 <div class="col-md-6 mb-3">
-                                    <label for="rfrom" class="text-white">Route From:</label>
+                                    <label for="rfrom" style="color: #1e3c72; font-weight: 600; text-shadow: none;">Route From:</label>
                                     <div class="station-search-container">
                                         <input type="text" name="rfrom_display" id="rfrom" class="form-control station-search" 
-                                               placeholder="Search station..." autocomplete="off" required>
+                                               placeholder="Search station..." autocomplete="off" required
+                                               style="border: 2px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                                         <input type="hidden" name="rfrom" id="rfrom_id">
-                                        <div id="fromResults" class="search-results"></div>
+                                        <div id="fromResults" class="search-results" style="background: rgba(255, 255, 255, 0.98); box-shadow: 0 8px 16px rgba(0,0,0,0.2);"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="to" class="text-white">Route To:</label>
+                                    <label for="to" style="color: #1e3c72; font-weight: 600; text-shadow: none;">Route To:</label>
                                     <div class="station-search-container">
-                                        <input type="text" name="to_display" id="to" class="form-control station-search"
-                                               placeholder="Search station..." autocomplete="off" required>
+                                        <input type="text" name="to_display" id="to" class="form-control station-search" 
+                                               placeholder="Search station..." autocomplete="off" required
+                                               style="border: 2px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                                         <input type="hidden" name="to" id="to_id">
-                                        <div id="toResults" class="search-results"></div>
+                                        <div id="toResults" class="search-results" style="background: rgba(255, 255, 255, 0.98); box-shadow: 0 8px 16px rgba(0,0,0,0.2);"></div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-row m-2">
                                 <div class="col-md-6 mb-3">
-                                    <label for="date" class="text-white">Departure Date:</label>
-                                    <div class="date-picker-container">
-                                        <input type="date" 
-                                               name="date" 
-                                               id="date" 
-                                               class="form-control date-picker" 
-                                               min="<?php echo date('Y-m-d'); ?>" 
-                                               required>
-                                        <i class="fas fa-calendar-alt date-icon"></i>
-                                    </div>
+                                    <label for="date" style="color: #1e3c72; font-weight: 600; text-shadow: none;">Departure Date:</label>
+                                    <input type="date" name="date" id="date" class="form-control" required
+                                           style="border: 2px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="ctype" class="text-white">Class:</label>
-                                    <select name="ctype" id="ctype" class="form-control" required>
-                                        <option value="{{form.class_type}}"></option>
+                                    <label for="ctype" style="color: #1e3c72; font-weight: 600; text-shadow: none;">Class:</label>
+                                    <select name="ctype" id="ctype" class="form-control" required
+                                            style="border: 2px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                        <option value="">Select</option>
+                                        {% for class in form.class_type %}
+                                            {{class}}
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-row m-2">
                                 <div class="col-md-6 mb-3">
-                                    <label for="pa" class="text-white">Passenger(Adult):</label>
-                                    <select name="pa" id="pa" class="form-control" required>
-                                        <option selected>0</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                    <label for="pa" style="color: #1e3c72; font-weight: 600; text-shadow: none;">Passenger (Adult):</label>
+                                    <select name="pa" id="pa" class="form-control" required
+                                            style="border: 2px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="pc" class="text-white">Passenger(Child):</label>
-                                    <select name="pc" id="pc" class="form-control" required>
-                                        <option selected>0</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                    <label for="pc" style="color: #1e3c72; font-weight: 600; text-shadow: none;">Passenger (Child):</label>
+                                    <select name="pc" id="pc" class="form-control" required
+                                            style="border: 2px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
                                     </select>
                                 </div>
                             </div>
@@ -97,7 +95,15 @@
 
                             <div class="form-row m-2 mb-4">
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-info btn-block">Find Train</button>
+                                    <button type="submit" class="btn btn-primary btn-block" 
+                                            style="background: linear-gradient(135deg, #1e3c72, #2a5298); 
+                                                   border: none; 
+                                                   padding: 12px; 
+                                                   font-weight: 600; 
+                                                   box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3); 
+                                                   transition: all 0.3s ease;">
+                                        Search Trains
+                                    </button>
                                 </div>
                             </div>
                         </form>
