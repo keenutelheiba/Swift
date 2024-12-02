@@ -5,120 +5,173 @@
 {% endblock title %}
 
 {% block content %}
-
-    
-<div class="row">
-    <div class="col-lg-12 text-center p-4 text-success">
-        <h4>Booking Details of Booking No: {{booking_detail.booking.id}}</h4>
+<div class="booking-detail-container">
+    <div class="col-lg-12 text-center p-4">
+        <h4 class="booking-header">
+            Booking Details #{{booking_detail.booking.id}}
+            <span class="badge {% if booking_detail.booking.status == 'Confirmed' %}badge-success{% else %}badge-danger{% endif %}">
+                {{booking_detail.booking.status}}
+            </span>
+        </h4>
     </div>
 
-    <!-- this section is about the booking details -->
-
-    <div class="col-lg-12 mx-auto">
-        <div class="row">
-            <div class="col-lg-12 m-1 text-center text-info">
-                <h5>Booking Detail</h5>
-            </div>
-            <div class="col-lg-12 mt-2 mb-2 mx-auto">
-                <table class="table table-hover">
-                    <thead class="bg-dark text-white text-center">
-                      <tr>
-                        <th scope="col">Train Name</th>
-                        <th scope="col">Source</th>
-                        <th scope="col">Destination</th>
-                        <th scope="col">Travel Date</th>
-                        <th scope="col">Travel Time</th>
-                        <th scope="col">Total Passenger</th>
-                        <th scope="col">Adult</th>
-                        <th scope="col">Child</th>
-                        <th scope="col">Class Type</th>
-                        <th scope="col">Fare Each</th>
-                        <th scope="col">Total Fare</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="text-center">
-                        <td>{{booking_detail.train}}</td>
-                        <td>{{booking_detail.source}}</td>
-                        <td>{{booking_detail.destination}}</td>
-                        <td>{{booking_detail.travel_date}}</td>
-                        <td>{{booking_detail.travel_time}}</td>
-                        <td>{{booking_detail.nop}}</td>
-                        <td>{{booking_detail.adult}}</td>
-                        <td>{{booking_detail.child}}</td>
-                        <td>{{booking_detail.class_type}}</td>
-                        <td>{{booking_detail.fpp}}</td>
-                        <td>{{booking_detail.total_fare}}</td>
-                      </tr>
-                    </tbody>
-                </table>
+    <!-- Journey Details Card -->
+    <div class="detail-card journey-details mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Journey Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="journey-info">
+                        <i class="fas fa-train"></i>
+                        <strong>{{booking_detail.train}}</strong>
+                    </div>
+                    <div class="route-info">
+                        <div class="source">
+                            <i class="fas fa-map-marker-alt"></i> From: {{booking_detail.source}}
+                        </div>
+                        <div class="destination">
+                            <i class="fas fa-map-marker-alt"></i> To: {{booking_detail.destination}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="time-info">
+                        <div>
+                            <i class="fas fa-calendar"></i> {{booking_detail.travel_date}}
+                        </div>
+                        <div>
+                            <i class="fas fa-clock"></i> {{booking_detail.travel_time}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- this section is about the billing info -->
-
-    <div class="col-lg-12 mx-auto">
-        <div class="row">
-            <div class="col-lg-12 text-center text-info">
-                <h5>Billing Info</h5>
-            </div>
-            <div class="col-lg-12 mt-2 mb-2 mx-auto">
-                <table class="table table-hover">
-                    <thead class="bg-dark text-white text-center">
-                      <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="text-center">
-                        <td>{{billing.user.username}}</td>
-                        <td>{{billing.email}}</td>
-                        <td>{{billing.phone}}</td>
-                      </tr>
-                    </tbody>
-                </table>
+    <!-- Passenger and Fare Details -->
+    <div class="detail-card passenger-details mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Passenger & Fare Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="passenger-count">
+                        <h6>Passengers</h6>
+                        <div class="d-flex justify-content-between">
+                            <span>Adults: {{booking_detail.adult}}</span>
+                            <span>Children: {{booking_detail.child}}</span>
+                            <span>Total: {{booking_detail.nop}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="fare-details">
+                        <h6>Fare Information</h6>
+                        <div class="d-flex justify-content-between">
+                            <span>Class: {{booking_detail.class_type}}</span>
+                            <span>Fare/Person: ₹{{booking_detail.fpp}}</span>
+                            <span>Total: ₹{{booking_detail.total_fare}}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- this section is about the payment details -->
-
-    <div class="col-lg-12 mx-auto">
-        <div class="row">
-            <div class="col-lg-12 text-center text-info">
-                <h5>Payment Detail</h5>
-            </div>
-            <div class="col-lg-12 mt-2 mb-2 mx-auto">
-                <table class="table table-hover">
-                    <thead class="bg-dark text-white text-center">
-                      <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Pay Amount</th>
-                        <th scope="col">Payment Method</th>
-                        <th scope="col">Pay Phone Number</th>
-                        <th scope="col">Transaction ID</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="text-center">
-                        <td>{{payment.user.username}}</td>
-                        <td>{{payment.pay_amount}}</td>
-                        <td>{{payment.pay_method}}</td>
-                        <td>{{payment.phone}}</td>
-                        <td>{{payment.trxid}}</td>
-                        <td>{{payment.status}}</td>
-                      </tr>
-                    </tbody>
-                </table>
+    <!-- Contact Information -->
+    <div class="detail-card contact-info mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Contact Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <i class="fas fa-user"></i> {{billing.user.username}}
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-envelope"></i> {{billing.email}}
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-phone"></i> {{billing.phone}}
+                </div>
             </div>
         </div>
     </div>
-
 </div>
-    
 
+<style>
+.booking-detail-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.booking-header {
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.detail-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 15px 20px;
+}
+
+.card-body {
+    padding: 20px;
+    background: #fff;
+}
+
+.journey-info, .route-info, .time-info {
+    padding: 10px 0;
+}
+
+.journey-info i, .route-info i, .time-info i {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.passenger-count, .fare-details {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.badge {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin-left: 10px;
+}
+
+.badge-success {
+    background-color: #2ecc71;
+}
+
+.badge-danger {
+    background-color: #e74c3c;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add hover effects to cards
+    const cards = document.querySelectorAll('.detail-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
 {% endblock content %}

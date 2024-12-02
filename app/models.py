@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
+from datetime import datetime, time
 
 # Create your models here.
 
@@ -51,6 +53,23 @@ class Train(models.Model):
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        if self.departure_time and self.arrival_time:
+            # Convert times to comparable format
+            dep_time = self.departure_time.strftime('%H:%M') if isinstance(self.departure_time, time) else self.departure_time
+            arr_time = self.arrival_time.strftime('%H:%M') if isinstance(self.arrival_time, time) else self.arrival_time
+
+            try:
+                # Validate time format
+                datetime.strptime(dep_time, '%H:%M')
+                datetime.strptime(arr_time, '%H:%M')
+            except (ValueError, TypeError):
+                raise ValidationError('Invalid time format. Use HH:MM (24-hour) format.')
+
+            # Ensure arrival time is after departure time
+            if dep_time >= arr_time:
+                raise ValidationError('Arrival time must be after departure time.')
 
 
 class Booking(models.Model):

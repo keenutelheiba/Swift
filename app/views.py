@@ -10,6 +10,7 @@ from django.db.models import Q
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import os
+from django.core.exceptions import ValidationError
 
 
 # Create your views here.
@@ -26,42 +27,52 @@ class Home(View):
 
 class AvailableTrain(View):
     def get(self, request):
-        if request.GET:
-
-            rfrom = request.GET.get('rfrom')
-            to = request.GET.get('to')
+        try:
+            # Get form data
+            source = request.GET.get('rfrom')
+            destination = request.GET.get('to')
             date = request.GET.get('date')
-            ctype = request.GET.get('ctype')
-            adult = request.GET.get('pa')
-            child = request.GET.get('pc')
+            class_type = request.GET.get('ctype')
+            pa = request.GET.get('pa')
+            pc = request.GET.get('pc')
 
-            adult = int(adult)
-            child = int(child)
+            # Validate time formats
+            departure_time = request.GET.get('departure_time')
+            arrival_time = request.GET.get('arrival_time')
 
-            if rfrom == '' or rfrom == 'Select' or to == '' or to == 'Select' \
-                    or date == '' or date == 'mm//dd//yyyy' or ctype == '':
-                messages.warning(request, 'Please fillup the form properly')
+            if departure_time and arrival_time:
+                try:
+                    # Try to parse the times to validate format
+                    datetime.strptime(departure_time, '%H:%M')
+                    datetime.strptime(arrival_time, '%H:%M')
+                except ValueError:
+                    messages.error(request, "Invalid time format. Please use HH:MM format.")
+                    return redirect('home')
+
+            # Get available trains
+            available_trains = Train.objects.filter(
+                source=source,
+                destination=destination
+            )
+
+            if not available_trains:
+                messages.warning(request, "No trains available for this route.")
                 return redirect('home')
 
-            elif (adult + child) < 1:
-                messages.warning(request, 'Please book minimum 1 seat')
-                return redirect('home')
+            context = {
+                'search': available_trains,
+                'source': Station.objects.get(id=source),
+                'destination': Station.objects.get(id=destination),
+                'class_type': ClassType.objects.get(id=class_type),
+                'date': date,
+                'pa': pa,
+                'pc': pc
+            }
 
-            elif (adult + child) > 5:
-                messages.warning(request, 'You can book maximum 5 seat')
-                return redirect('home')
+            return render(request, 'available_train.html', context)
 
-            else:
-                search = Train.objects.filter(source=rfrom, destination=to, class_type=ctype)
-                
-                source = Station.objects.get(pk=rfrom)
-                destination = Station.objects.get(pk=to)
-                class_type = ClassType.objects.get(pk=ctype)
-                
-                return render(request, 'available_train.html', {'search': search, 'source':source, 'destination':destination, 'class_type':class_type})
-
-        else:
-            messages.warning(request, 'Find train first to get available train')
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
             return redirect('home')
 
 
@@ -136,19 +147,18 @@ class Bookings(View):
             pay_phone = request.POST['pay_phone']
             trxid = request.POST['trxid']
 
-            # Convert time format
-            if travel_time:
-                time_parts = travel_time.lower().replace('.', '').split()
-                hour = int(time_parts[0])
-                if time_parts[1] == 'pm' and hour != 12:
-                    hour += 12
-                elif time_parts[1] == 'am' and hour == 12:
-                    hour = 0
-                formatted_time = f"{hour:02d}:00:00"
+            # Convert 12-hour format to 24-hour format
+            if isinstance(travel_time, str):
+                travel_time = travel_time.replace('.', '')
+                try:
+                    parsed_time = datetime.strptime(travel_time, '%I:%M %p')
+                    travel_time = parsed_time.strftime('%H:%M')
+                except ValueError:
+                    pass
 
             # Create datetime object
-            travel_datetime = f"{travel_date} {formatted_time}"
-            travel_dt = datetime.strptime(travel_datetime, '%Y-%m-%d %H:%M:%S')
+            travel_datetime = f"{travel_date} {travel_time}"
+            travel_dt = datetime.strptime(travel_datetime, '%Y-%m-%d %H:%M')
 
             # Create booking
             booking = Booking(
@@ -165,7 +175,7 @@ class Bookings(View):
                 source=source,
                 destination=destination,
                 travel_date=travel_date,
-                travel_time=formatted_time,
+                travel_time=travel_time,
                 travel_dt=travel_dt,
                 nop=nop,
                 adult=adult,
@@ -206,7 +216,7 @@ class Bookings(View):
                     phone=phone,
                     source=source,
                     destination=destination,
-                    departure=formatted_time,
+                    departure=travel_time,
                     travel_date=travel_date,
                     train_name=train,
                     class_type=class_type,

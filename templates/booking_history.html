@@ -1,68 +1,293 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    User Booking History
+    Booking History
 {% endblock title %}
 
 {% block content %}
-
-{% load custom_filter_date %}
-
-<div class="row mb-4">
-    <div class="col-lg-12 text-center p-4 text-success">
-        <h4>Your Bookings</h4>
+<div class="booking-history-container">
+    <div class="col-lg-12 text-center p-4">
+        <h4 class="text-primary">Your Booking History</h4>
     </div>
 
-    <!-- this section is about the bookings -->
-
-    <div class="col-lg-12 m-1 mx-auto">
-        <table class="table table-hover">
-            <thead class="bg-dark text-white text-center">
-              <tr>
-                <th scope="col">Booking ID</th>
-                <th scope="col">Booking Date</th>
-                <th scope="col">Booking Time</th>
-                <th scope="col">Booking Status</th>
-                <th scope="col">Booking Details</th>
-                <th scope="col">Ticket</th>
-                <th scope="col">Cancel Booking</th>
-              </tr>
-            </thead>
-            <tbody>
-                {% for booking in booking %}
-              <tr class="text-center">
-                <th scope="row">{{booking.id}}</th>
-                <td>{{booking.booking_date}}</td>
-                <td>{{booking.booking_time}}</td>
-                <td>{{booking.status}}</td>
-                <td><a href="{% url 'booking_detail' booking.id %}" class="btn btn-info text-white">View Details</a></td>
-                <td><a href="booking_history/ticket/{{booking.id}}" class="btn btn-success text-white" style="text-decoration: none;" target="_blank">Get Ticket</a></td>
-                <td>
-                    {% if booking.travel_dt.date >= current_date %}
-                        <form action="{% url 'cancel_booking' %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <input type="hidden" name="booking_id" value="{{booking.id}}">
-                            <button type="submit" class="btn btn-danger">Cancel Booking</button>
-                        </form>
-                    {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-        </table>
+    <!-- Search and Filter Section -->
+    <div class="filters-container mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" id="searchBooking" class="form-control" placeholder="Search bookings...">
+            </div>
+            <div class="col-md-3">
+                <select id="statusFilter" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="dateFilter" class="form-control">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button id="clearFilters" class="btn btn-secondary">Clear Filters</button>
+            </div>
+        </div>
     </div>
 
+    <!-- Booking Table -->
+    <div class="col-lg-12 m-1 mx-auto booking-table-container">
+        <div class="table-responsive">
+            <table class="table table-hover" id="bookingTable">
+                <thead class="bg-dark text-white text-center">
+                    <tr>
+                        <th scope="col" class="sortable" data-sort="id">Booking ID ↕</th>
+                        <th scope="col" class="sortable" data-sort="date">Booking Date ↕</th>
+                        <th scope="col" class="sortable" data-sort="time">Booking Time ↕</th>
+                        <th scope="col" class="sortable" data-sort="status">Status ↕</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in booking %}
+                    <tr class="text-center booking-row" 
+                        data-id="{{booking.id}}"
+                        data-date="{{booking.booking_date}}"
+                        data-status="{{booking.status}}">
+                        <th scope="row">{{booking.id}}</th>
+                        <td>{{booking.booking_date}}</td>
+                        <td>{{booking.booking_time}}</td>
+                        <td><span class="badge {% if booking.status == 'Confirmed' %}badge-success{% else %}badge-danger{% endif %}">
+                            {{booking.status}}
+                        </span></td>
+                        <td class="action-buttons">
+                            <div class="btn-group action-btn-group" role="group">
+                                <!-- View Details Button -->
+                                <a href="{% url 'booking_detail' booking.id %}" 
+                                   class="btn btn-info btn-sm action-btn"
+                                   data-toggle="tooltip" 
+                                   data-placement="top" 
+                                   title="View Booking Details">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span class="btn-text">Details</span>
+                                </a>
+
+                                <!-- Ticket Button -->
+                                <a href="booking_history/ticket/{{booking.id}}" 
+                                   class="btn btn-success btn-sm action-btn"
+                                   data-toggle="tooltip" 
+                                   data-placement="top" 
+                                   title="Download Ticket"
+                                   target="_blank">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <span class="btn-text">Ticket</span>
+                                </a>
+
+                                <!-- Cancel Button - Only show if travel date is in future -->
+                                {% if booking.travel_dt.date >= current_date %}
+                                <form action="{% url 'cancel_booking' %}" 
+                                      method="post" 
+                                      class="d-inline cancel-form"
+                                      onsubmit="return confirmCancel(event)">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="booking_id" value="{{booking.id}}">
+                                    <button type="submit" 
+                                            class="btn btn-danger btn-sm action-btn"
+                                            data-toggle="tooltip" 
+                                            data-placement="top" 
+                                            title="Cancel Booking">
+                                        <i class="fas fa-times"></i>
+                                        <span class="btn-text">Cancel</span>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No bookings found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<!-- Add this CSS -->
+<style>
+.booking-history-container {
+    padding: 20px;
+}
+
+.filters-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.booking-table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.sortable:hover {
+    background-color: #2c3e50;
+}
+
+.badge {
+    padding: 8px 12px;
+}
+
+.action-btn-group {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.action-btn {
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.action-btn i {
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .btn-text {
+        display: none;
+    }
     
+    .action-btn {
+        padding: 6px 8px;
+    }
+    
+    .action-btn i {
+        margin: 0;
+    }
+}
+</style>
 
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+<!-- Add this JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchBooking');
+    const statusFilter = document.getElementById('statusFilter');
+    const dateFilter = document.getElementById('dateFilter');
+    const clearFilters = document.getElementById('clearFilters');
+    const bookingRows = document.querySelectorAll('.booking-row');
 
+    // Search and filter functionality
+    function filterBookings() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusTerm = statusFilter.value;
+        const dateTerm = dateFilter.value;
+
+        bookingRows.forEach(row => {
+            let show = true;
+            const rowText = row.textContent.toLowerCase();
+            const status = row.getAttribute('data-status');
+            const date = new Date(row.getAttribute('data-date'));
+
+            if (searchTerm && !rowText.includes(searchTerm)) show = false;
+            if (statusTerm && status !== statusTerm) show = false;
+            if (dateTerm) {
+                const today = new Date();
+                switch(dateTerm) {
+                    case 'today':
+                        if (date.toDateString() !== today.toDateString()) show = false;
+                        break;
+                    case 'week':
+                        const weekAgo = new Date(today.setDate(today.getDate() - 7));
+                        if (date < weekAgo) show = false;
+                        break;
+                    case 'month':
+                        const monthAgo = new Date(today.setMonth(today.getMonth() - 1));
+                        if (date < monthAgo) show = false;
+                        break;
+                }
+            }
+            row.style.display = show ? '' : 'none';
+        });
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', filterBookings);
+    statusFilter.addEventListener('change', filterBookings);
+    dateFilter.addEventListener('change', filterBookings);
+    clearFilters.addEventListener('click', () => {
+        searchInput.value = '';
+        statusFilter.value = '';
+        dateFilter.value = '';
+        bookingRows.forEach(row => row.style.display = '');
+    });
+
+    // Sorting functionality
+    document.querySelectorAll('.sortable').forEach(header => {
+        header.addEventListener('click', () => {
+            const column = header.getAttribute('data-sort');
+            const rows = Array.from(document.querySelectorAll('.booking-row'));
+            const isAscending = header.classList.contains('asc');
+            
+            rows.sort((a, b) => {
+                let aVal = a.getAttribute(`data-${column}`);
+                let bVal = b.getAttribute(`data-${column}`);
+                return isAscending ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
+            });
+
+            document.querySelectorAll('.sortable').forEach(h => h.classList.remove('asc', 'desc'));
+            header.classList.toggle('asc', !isAscending);
+            header.classList.toggle('desc', isAscending);
+
+            const tbody = document.querySelector('tbody');
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    });
+
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Confirmation dialog for cancel
+    window.confirmCancel = function(event) {
+        event.preventDefault();
+        const form = event.target;
+        
+        Swal.fire({
+            title: 'Cancel Booking?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel booking',
+            cancelButtonText: 'No, keep booking'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        
+        return false;
+    };
+});
+</script>
 {% endblock content %}

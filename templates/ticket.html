@@ -4,114 +4,156 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Train Ticket - {{ticket.first.id}}</title>
+    <style>
+        .ticket-container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .ticket-header {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            padding: 15px;
+            color: white;
+        }
 
-    <title>User Tickets</title>
+        .ticket-body {
+            padding: 20px;
+            position: relative;
+        }
 
+        .ticket-divider {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border-left: 2px dashed #dee2e6;
+        }
+
+        .ticket-info {
+            margin: 10px 0;
+        }
+
+        .ticket-info label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .ticket-info .value {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .ticket-qr {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .print-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        @media print {
+            .print-button {
+                display: none;
+            }
+            .ticket-container {
+                box-shadow: none;
+                margin: 0;
+                page-break-after: always;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light">
+    <button class="btn btn-success print-button" id="download">
+        <i class="fas fa-print"></i> Print Ticket
+    </button>
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="col-lg-12 pt-4">
-                <button class="btn btn-success" id="download">Print</button>
-            </div>
-        </div>
-        <div class="col-lg-11 mx-auto" id="ticket">
-            <div class="row mb-4">
-                <div class="col-lg-12 text-center p-2 text-success">
-                    <h4>Your Train Tickets</h4>
+    <div class="container py-4" id="ticket">
+        {% for ticket in ticket %}
+        <div class="ticket-container">
+            <div class="ticket-header">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <h4 class="mb-0"><i class="fas fa-train mr-2"></i> Local Train Project</h4>
+                    </div>
+                    <div class="col-4 text-right">
+                        <h5 class="mb-0">TID: {{ticket.id}}</h5>
+                    </div>
                 </div>
+            </div>
 
-                <!-- this section is about the tickets -->
-                {% for ticket in ticket %}
-                <div class="col-lg-12 mx-auto mb-4 border border-success">
+            <div class="row ticket-body">
+                <div class="col-md-7">
+                    <div class="ticket-info">
+                        <label><i class="fas fa-user"></i> Passenger Name</label>
+                        <div class="value">{{ticket.user.first_name}} {{ticket.user.last_name}}</div>
+                    </div>
+                    
                     <div class="row">
-                        <!-- ticket left part -->
-                        <div class="col-lg-7 mx-auto  border border-dark border-left-0 border-bottom-0 border-top-0">
-                            <div class="row">
-                                <div class="col-lg-12 bg-success text-white">
-                                    <div class="row">
-                                        <div class="col-lg-9 text-center">
-                                            <h5>Local Train Project Ticket</h5>
-                                        </div>
-                                        <div class="col-lg-3 text-right">
-                                            <h5>TID: {{ticket.id}}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 pt-1 text-muted">
-                                    <p>Ticket issue date: {{ticket.created_at}}</p>
-                                </div>
-                                <div class="col-lg-12 pb-1">
-                                    <div class="row">
-                                        <div class="col-lg-6 mx-auto">
-                                            <h6>Passenger Name:<br>{{ticket.user.first_name}} {{ticket.user.last_name}}</h6>
-                                            <h6>Phone Number:<br>{{ticket.phone}}</h6>
-                                            <h6>Travel Date:<br>{{ticket.travel_date}}</h6>
-                                            <h6>Travel Time:<br>{{ticket.departure}}</h6>
-                                        </div>
-                                        <div class="col-lg-6 mx-auto">
-                                            <h6>Train Name:<br>{{ticket.train_name}}</h6>
-                                            <h6>From:<br>{{ticket.source}}</h6>
-                                            <h6>To:<br>{{ticket.destination}}</h6>
-                                            <h6>Class Type:<br>{{ticket.class_type}}</h6>
-                                            <h6>Fare:<br>{{ticket.fare}}</h6>
-
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-md-6">
+                            <div class="ticket-info">
+                                <label><i class="fas fa-phone"></i> Contact</label>
+                                <div class="value">{{ticket.phone}}</div>
+                            </div>
+                            <div class="ticket-info">
+                                <label><i class="fas fa-calendar"></i> Travel Date</label>
+                                <div class="value">{{ticket.travel_date}}</div>
                             </div>
                         </div>
-                        <!-- ticket right part -->
-                        <div class="col-lg-5 mx-auto">
-                            <div class="row">
-                                <div class="col-lg-12 mx-auto bg-success text-white border border-dark border-right-0 border-bottom-0 border-top-0">
-                                    <div class="row">
-                                        <div class="col-lg-7 text-center">
-                                            <h5>LTP Ticket</h5>
-                                        </div>
-                                        <div class="col-lg-5 text-right">
-                                            <h5>TID: {{ticket.id}}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 text-muted text-center pt-1">
-                                    <p>(Passenger copy)</p>
-                                </div>
-                                <div class="col-lg-12 mx-auto pb-1">
-                                    <h6>Passenger Name:<br>{{ticket.user.first_name}} {{ticket.user.last_name}}</h6>
-                                    <h6>Travel Date: {{ticket.travel_date}}</h6>
-                                    <h6>Travel Time: {{ticket.departure}}</h6>
-                                    <h6>Train Name: {{ticket.train_name}}</h6>
-                                    <h6>From:<br>{{ticket.source}}</h6>
-                                    <h6>To:<br>{{ticket.destination}}</h6>
-                                    <h6>Class Type: {{ticket.class_type}}</h6>
-                                </div>
+                        <div class="col-md-6">
+                            <div class="ticket-info">
+                                <label><i class="fas fa-clock"></i> Departure</label>
+                                <div class="value">{{ticket.departure}}</div>
+                            </div>
+                            <div class="ticket-info">
+                                <label><i class="fas fa-ticket-alt"></i> Class</label>
+                                <div class="value">{{ticket.class_type}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+
+                <div class="ticket-divider d-none d-md-block"></div>
+
+                <div class="col-md-5">
+                    <div class="ticket-info">
+                        <label><i class="fas fa-train"></i> Train</label>
+                        <div class="value">{{ticket.train_name}}</div>
+                    </div>
+                    <div class="ticket-info">
+                        <label><i class="fas fa-map-marker-alt"></i> From</label>
+                        <div class="value">{{ticket.source}}</div>
+                    </div>
+                    <div class="ticket-info">
+                        <label><i class="fas fa-map-marker"></i> To</label>
+                        <div class="value">{{ticket.destination}}</div>
+                    </div>
+                    <div class="ticket-info">
+                        <label><i class="fas fa-money-bill"></i> Fare</label>
+                        <div class="value">₹{{ticket.fare}}</div>
+                    </div>
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-</div>
-   
+
+    <script>
+        document.getElementById('download').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
 </body>
 </html>
-
-<script src="/static/js/jquery-slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="/static/js/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="/static/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.js"></script>
-<script src="/static/js/pdf.js" crossorigin="anonymous"></script>
