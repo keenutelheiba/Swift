@@ -5,22 +5,22 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="hero-section">
-        <div class="overlay"></div>
-        <div class="container">
+    <div class="hero-section" style="position: relative; min-height: 100vh; background: linear-gradient(135deg, rgba(30, 60, 114, 0.4) 0%, rgba(42, 82, 152, 0.4) 100%), url('https://images.unsplash.com/photo-1532105956626-9569c03602f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-attachment: fixed;">
+        <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.05);"></div>
+        <div class="container" style="position: relative; z-index: 1;">
             <div class="row align-items-center">
                 <!-- Welcome text with animation -->
-                <div class="col-lg-6 col-md-12 welcome-text">
+                <div class="col-lg-6 col-md-12 welcome-text" style="padding: 100px 0;">
                     <div class="pt-4 pt-lg-5 text-white animate-text">
-                        <h1 class="fade-in"><b>Welcome To</b></h1>
-                        <h2 class="slide-in"><b> SWIFT - Ticketing Project</b></h2>
-                        <h3 class="fade-up"><b></b></h3>
+                        <h1 class="fade-in" style="font-size: 3.5rem; font-weight: 700; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"><b>Welcome To</b></h1>
+                        <h2 class="slide-in" style="font-size: 2.8rem; font-weight: 600; color: #fff; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"><b>SWIFT - Ticketing Project</b></h2>
+                        <h3 class="fade-up" style="font-size: 1.8rem; color: #e0e0e0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"><b></b></h3>
                     </div>
                 </div>
 
-                <!-- Search form with animation -->
-                <div class="col-lg-6 col-md-12 py-4">
-                    <div class="search-card fade-in-up">
+                <!-- Search Form -->
+                <div class="col-lg-6 col-md-12">
+                    <div class="card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); backdrop-filter: blur(10px); padding: 30px; margin: 20px 0;">
                         <form role="search" action="available_train">
                             <div class="form-row m-2 mt-4">
                                 <div class="col-md-6 mb-3">
@@ -104,47 +104,123 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Features Section -->
+            <div class="row mt-5" style="padding: 50px 0;">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="info-card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; height: 100%; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div class="icon" style="font-size: 2.5rem; color: #1e3c72; margin-bottom: 15px;">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <div class="content">
+                            <h5 style="color: #1e3c72; font-weight: 600;">Book Tickets</h5>
+                            <p style="color: #666;">Book your train tickets instantly. Quick, easy, and secure booking process.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="info-card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; height: 100%; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div class="icon" style="font-size: 2.5rem; color: #1e3c72; margin-bottom: 15px;">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="content">
+                            <h5 style="color: #1e3c72; font-weight: 600;">RailSeva App</h5>
+                            <p style="color: #666;">Checkout available seats, route information, fare information on real time basis with RailSeva App.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="info-card" style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; height: 100%; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div class="icon" style="font-size: 2.5rem; color: #1e3c72; margin-bottom: 15px;">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="content">
+                            <h5 style="color: #1e3c72; font-weight: 600;">Pay Securely</h5>
+                            <p style="color: #666;">Pay using your convenient payment option. Indian Railway supports Visa, Master and UPI for your convenience.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Information cards section with hover effects -->
-    <div class="container py-5">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="info-card hover-card">
-                    <div class="icon pulse">
-                        <i class="fas fa-tags fa-2x text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h5>Get Train Tickets from the comfort of your home</h5>
-                        <p>Book train tickets from anywhere using the robust ticketing platform exclusively built to provide the passengers with pleasant ticketing experience.</p>
-                    </div>
-                </div>
-            </div>
+    <style>
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
 
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="info-card">
-                    <div class="icon">
-                        <i class="far fa-clock fa-2x text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h5>Train & Ticketing related information at your fingertips</h5>
-                        <p>Checkout available seats, route information, fare information on real time basis with RailSeva App.</p>
-                    </div>
-                </div>
-            </div>
+        .form-control:focus {
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 0.2rem rgba(30, 60, 114, 0.25);
+        }
 
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="info-card">
-                    <div class="icon">
-                        <i class="fas fa-lock fa-2x text-primary"></i>
-                    </div>
-                    <div class="content">
-                        <h5>Pay Securely</h5>
-                        <p>Pay using your convenient payment option. Indian Railway supports Visa, Master and UPI for your convenience.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        .search-results {
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .search-result-item.selected {
+            background-color: #e9ecef;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .slide-in {
+            animation: slideIn 1s ease-out;
+        }
+
+        .fade-up {
+            animation: fadeUp 1s ease-out;
+        }
+
+        input[type="date"] {
+            padding: 0.375rem 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-text {
+                padding: 50px 0;
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            h2 {
+                font-size: 2rem !important;
+            }
+        }
+    </style>
 {% endblock content %}
