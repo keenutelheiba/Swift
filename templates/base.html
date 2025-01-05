@@ -46,10 +46,6 @@
             <li class="{% if request.path == url %}active{% endif %}">
                 <a class="nav-link" href="{% url 'feedback' %}"><i class="fas fa-comments"></i>Feedbacks</a>
             </li>
-            {% url 'contact' as url %}  
-            <li class="{% if request.path == url %}active{% endif %}">
-                <a class="nav-link" href="{% url 'contact' %}"><i class="fas fa-address-book"></i> Contact Us</a>
-            </li>
         </ul>
 
         <ul class="navbar-nav">

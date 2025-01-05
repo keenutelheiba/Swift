@@ -581,3 +581,4 @@ def search_stations(request):
         for station in stations
     ]
     return JsonResponse(results, safe=False)
+

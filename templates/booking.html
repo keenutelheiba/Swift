@@ -5,83 +5,169 @@
 {% endblock title %}
 
 {% block content %}
+<div class="booking-detail-container">
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="col-lg-12 text-center p-4">
+            <h4 class="booking-header">Confirm Booking</h4>
+        </div>
 
-    <div class="container">
-        <form method="post" action="">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-lg-12 text-center p-4 text-success">
-                    <h4>Confirm Booking</h4>
-                </div>
-
-                <div class="col-lg-12">
-                    <div class="row">
-                        <!-- personal info part -->
-                        <div class="col-lg-6 p-1 pr-5 card">
-                            <h5 class="pb-4 mx-auto text-primary">Personal Info</h5>
-                            <h6>User Name: {{user.first_name}} {{user.last_name}}</h6>
-                            <input class="form-control mb-2" type="username" name="username" id="username" value="{{user.username}}" required>
-                            <label for="email"><h6>Email:</h6></label>
-                            <input class="form-control mb-2" type="email" name="email" id="email" value="{{user.email}}" required>
-                            <label for="email"><h6>Phone Number:</h6></label>
-                            <input class="form-control" type="text" name="phone" id="phone" value="{{user.phone}}" required>
-                        </div>
-                        <!-- booking info part -->
-                        <div class="col-lg-6 p-1 card bookinginfo">
-                            <h5 class="pb-4 mx-auto text-primary">Booking Info</h5>
-                            <h6>Train Name: {{train}}<input type="hidden" name="train" value="{{train}}"></h6>
-                            <h6>Source: {{source}}<input type="hidden" name="source" value="{{source}}"></h6>
-                            <h6>Destination: {{destination}}<input type="hidden" name="destination" value="{{destination}}"></h6>
-                            <h6>Travel Date: {{date}}<input type="hidden" name="travel_date" value="{{date}}"></h6>
-                            <h6>Travel Time: {{departure}}<input type="hidden" name="departure" value="{{departure}}"></h6>
-                            <h6>Reaching Time: {{arrival}}<input type="hidden" name="arrival" value="{{arrival}}"></h6>
-                            <h6>Number of Passengers: {{tp}}<input type="hidden" name="tp" value="{{tp}}"></h6>
-                            <h6>Adult: {{pa}} Child: {{pc}}<input type="hidden" name="pa" value="{{pa}}"><input type="hidden" name="pc" value="{{pc}}"></h6>
-                            <h6>Class Type: {{ctype}}<input type="hidden" name="ctype" value="{{ctype}}"></h6>
-                            <h6>Fare Per Passenger: {{fare_each.price}}<input type="hidden" name="fpp" value="{{fare_each.price}}"></h6>
-                            <h6>Total Fare: {{total_fare}}<input type="hidden" name="total_fare" value="{{total_fare}}"></h6>
-                        </div>
+        <div class="row">
+            <!-- Personal Info Card -->
+            <div class="col-lg-6 mb-4">
+                <div class="detail-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>User Name: {{user.first_name}} {{user.last_name}}</h6>
+                        <input class="form-control mb-3" type="username" name="username" id="username" value="{{user.username}}" required>
+                        <label for="email"><h6>Email:</h6></label>
+                        <input class="form-control mb-3" type="email" name="email" id="email" value="{{user.email}}" required>
+                        <label for="phone"><h6>Phone Number:</h6></label>
+                        <input class="form-control" type="text" name="phone" id="phone" value="{{user.phone}}" required>
                     </div>
                 </div>
-
-                <div class="col-lg-12 pt-5 pb-5 pr-0 booking-button">
-                    <input type="button" id="myBtn" value="Pay Now">
-                </div>
-
             </div>
 
-            <!-- Payment Modal HTML -->
-
-            <div id="myModal" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content row">
-                    <div class="col-lg-12 text-center text-success">
-                        <span class="close">&times;</span>
-                        <h4>Please complete your payment</h4>
+            <!-- Booking Info Card -->
+            <div class="col-lg-6 mb-4">
+                <div class="detail-card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Booking Information</h5>
                     </div>
-                    <div class="col-lg-12 pl-4 pt-4 text-muted">
-                        <h6>You have to pay total: ₹{{total_fare}} </h6>
-                        <h6>Pay to this number: +91 9311744361</h6>
+                    <div class="card-body">
+                        <div class="journey-info">
+                            <h6><i class="fas fa-train"></i> Train Name: {{train}}<input type="hidden" name="train" value="{{train}}"></h6>
+                            <h6><i class="fas fa-map-marker-alt"></i> Source: {{source}}<input type="hidden" name="source" value="{{source}}"></h6>
+                            <h6><i class="fas fa-map-marker-alt"></i> Destination: {{destination}}<input type="hidden" name="destination" value="{{destination}}"></h6>
+                            <h6><i class="fas fa-calendar"></i> Travel Date: {{date}}<input type="hidden" name="travel_date" value="{{date}}"></h6>
+                            <h6><i class="fas fa-clock"></i> Travel Time: {{departure}}<input type="hidden" name="departure" value="{{departure}}"></h6>
+                            <h6><i class="fas fa-clock"></i> Reaching Time: {{arrival}}<input type="hidden" name="arrival" value="{{arrival}}"></h6>
+                            <h6><i class="fas fa-users"></i> Number of Passengers: {{tp}}<input type="hidden" name="tp" value="{{tp}}"></h6>
+                            <h6><i class="fas fa-user"></i> Adult: {{pa}} Child: {{pc}}<input type="hidden" name="pa" value="{{pa}}"><input type="hidden" name="pc" value="{{pc}}"></h6>
+                            <h6><i class="fas fa-ticket-alt"></i> Class Type: {{ctype}}<input type="hidden" name="ctype" value="{{ctype}}"></h6>
+                            <h6><i class="fas fa-rupee-sign"></i> Fare Per Passenger: {{fare_each.price}}<input type="hidden" name="fpp" value="{{fare_each.price}}"></h6>
+                            <h6><i class="fas fa-rupee-sign"></i> Total Fare: {{total_fare}}<input type="hidden" name="total_fare" value="{{total_fare}}"></h6>
+                        </div>
                     </div>
-                    <div class="col-lg-12 pl-4 pt-2">
-                        <h6>Select a Payment Method:</h6>
-                        <input type="radio" name="ptype" id="VISA" value="VISA" required>
-                        <label for="bkash">VISA</label><br>
-                        <input type="radio" name="ptype" id="MasterCard" value="MasterCard" required>
-                        <label for="rocket">MasterCard</label><br>
-                        <input type="radio" name="ptype" id="UPI" value="UPI" required>
-                        <label for="nagad">UPI</label><br>
-                        <label for="phone">Enter the phone number:</label>
-                        <input type="text" class="form-control" name="pay_phone" id="phone" placeholder="enter the phone number from which you are doing payment" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Button -->
+        <div class="text-center mb-4">
+            <input type="button" id="myBtn" value="Pay Now" class="btn btn-primary btn-lg">
+        </div>
+
+        <!-- Payment Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content detail-card">
+                <div class="card-header bg-success text-white">
+                    <span class="close">&times;</span>
+                    <h4 class="mb-0">Please complete your payment</h4>
+                </div>
+                <div class="card-body">
+                    <h6 class="text-muted">You have to pay total: ₹{{total_fare}}</h6>
+                    <h6 class="text-muted mb-4">Pay to this number: +91 9311744361</h6>
+                    
+                    <h6>Select a Payment Method:</h6>
+                    <div class="payment-options mb-3">
+                        <div class="form-check">
+                            <input type="radio" name="ptype" id="VISA" value="VISA" required>
+                            <label for="VISA">VISA</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="ptype" id="MasterCard" value="MasterCard" required>
+                            <label for="MasterCard">MasterCard</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="ptype" id="UPI" value="UPI" required>
+                            <label for="UPI">UPI</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label for="pay_phone">Enter the phone number:</label>
+                        <input type="text" class="form-control" name="pay_phone" id="pay_phone" placeholder="Enter the phone number from which you are doing payment" required>
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="trxid">Enter transaction id:</label>
-                        <input type="text" class="form-control" name="trxid" id="trxid" placeholder="enter your payment transaction id" required>
-                        <button type="submit" class="btn btn-success float-right mt-4">Confirm</button>
+                        <input type="text" class="form-control" name="trxid" id="trxid" placeholder="Enter your payment transaction id" required>
                     </div>
-
+                    <button type="submit" class="btn btn-success float-end">Confirm</button>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 
+<style>
+/* Using the same styles as booking_detail.html */
+.booking-detail-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.booking-header {
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.detail-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 15px 20px;
+}
+
+.card-body {
+    padding: 20px;
+    background: #fff;
+}
+
+.journey-info i {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+/* Additional styles for the modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    margin-top: 50px;
+    max-width: 600px;
+}
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.payment-options {
+    margin: 15px 0;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+</style>
 {% endblock content %}

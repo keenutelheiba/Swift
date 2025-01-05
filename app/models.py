@@ -46,7 +46,7 @@ class Train(models.Model):
     destination = models.ForeignKey(Station, null=True, blank=True, on_delete=models.PROTECT, related_name='To+')
     departure_time = models.TimeField(null=True, blank=True)
     arrival_time = models.TimeField(null=True, blank=True)
-    class_type = models.ManyToManyField(ClassType, null=True, blank=True)
+    class_type = models.ManyToManyField(ClassType)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -161,3 +161,4 @@ class ContactForm(models.Model):
     message = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True) 
+    
