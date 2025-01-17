@@ -32,7 +32,7 @@ class AvailableTrain(View):
             source = request.GET.get('rfrom')
             destination = request.GET.get('to')
             date = request.GET.get('date')
-            class_type = request.GET.get('ctype')
+            class_type = request.GET.get('ctype')  # Selected class type
             pa = request.GET.get('pa')
             pc = request.GET.get('pc')
 
@@ -49,10 +49,11 @@ class AvailableTrain(View):
                     messages.error(request, "Invalid time format. Please use HH:MM format.")
                     return redirect('home')
 
-            # Get available trains
+            # Get available trains matching the selected class type
             available_trains = Train.objects.filter(
                 source=source,
-                destination=destination
+                destination=destination,
+                class_type=class_type  # Filter by selected class type
             )
 
             if not available_trains:
